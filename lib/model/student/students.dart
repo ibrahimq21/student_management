@@ -5,6 +5,8 @@ class Student {
   @PrimaryKey(autoGenerate: true)
   int? iD;
   String? name;
+  String? email;
+  String? password;
   String? gender;
   int? stndClass;
   int? seat;
@@ -12,23 +14,19 @@ class Student {
   Student({
     this.iD,
     this.name,
+    this.email,
+    this.password,
     this.gender,
     this.stndClass,
     this.seat,
   });
 
-  Student.fromJson(Map<String, dynamic> json) {
-    iD = json['ID'];
-    name = json['Name'];
-    gender = json['Gender'];
-    stndClass = json['stnd_class'];
-    seat = json['Seat'];
-  }
-
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['ID'] = this.iD;
     data['Name'] = this.name;
+    data['Email'] = this.email;
+    data['Password'] = this.password;
     data['Gender'] = this.gender;
     data['stnd_class'] = this.stndClass;
     data['Seat'] = this.seat;

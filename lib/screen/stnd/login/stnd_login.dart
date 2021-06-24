@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:student_management/size_helper.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class StndLoginScreen extends StatefulWidget {
+  const StndLoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _StndLoginScreenState createState() => _StndLoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _StndLoginScreenState extends State<StndLoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final _usernameController = TextEditingController();
@@ -138,24 +138,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/SignupScreen');
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 28.0),
-                            child: Text(
-                              'Are u a student. Sign Up here then!',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

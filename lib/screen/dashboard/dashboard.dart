@@ -28,82 +28,82 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
       ),
-      body: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.only(left: 19.0, right: 19.0),
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              FlatButton(
-                minWidth: displayWidth(context) * 0.3,
-                height: displayHeight(context) * 0.1,
-                color: Color(0xff33828D),
-                onPressed: () {},
-                child: Center(
-                  child: Text(
-                    'Display Stnd',
-                    style: TextStyle(
-                      color: white,
-                    ),
+      body: Container(
+        padding: const EdgeInsets.only(left: 19.0, right: 19.0),
+        width: double.infinity,
+        height: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            FlatButton(
+              minWidth: displayWidth(context) * 0.3,
+              height: displayHeight(context) * 0.1,
+              color: Color(0xff33828D),
+              onPressed: () {
+                Navigator.of(context).pushNamed('/DisplayStndScreen');
+              },
+              child: Center(
+                child: Text(
+                  'Display Stnd',
+                  style: TextStyle(
+                    color: white,
                   ),
                 ),
               ),
-              SizedBox(
-                height: height,
-              ),
-              FlatButton(
-                minWidth: displayWidth(context) * 0.3,
-                height: displayHeight(context) * 0.1,
-                color: Color(0xff1F8976),
-                onPressed: () {},
-                child: Center(
-                  child: Text(
-                    'Add Department',
-                    style: TextStyle(
-                      color: white,
-                    ),
+            ),
+            SizedBox(
+              height: height,
+            ),
+            FlatButton(
+              minWidth: displayWidth(context) * 0.3,
+              height: displayHeight(context) * 0.1,
+              color: Color(0xff1F8976),
+              onPressed: () {},
+              child: Center(
+                child: Text(
+                  'Add Department',
+                  style: TextStyle(
+                    color: white,
                   ),
                 ),
               ),
-              SizedBox(
-                height: height,
-              ),
-              FlatButton(
-                minWidth: displayWidth(context) * 0.3,
-                height: displayHeight(context) * 0.1,
-                color: Color(0xff135e8d),
-                onPressed: () {},
-                child: Center(
-                  child: Text(
-                    'Edit Stnd',
-                    style: TextStyle(
-                      color: white,
-                    ),
+            ),
+            SizedBox(
+              height: height,
+            ),
+            FlatButton(
+              minWidth: displayWidth(context) * 0.3,
+              height: displayHeight(context) * 0.1,
+              color: Color(0xff135e8d),
+              onPressed: () {},
+              child: Center(
+                child: Text(
+                  'Edit Stnd',
+                  style: TextStyle(
+                    color: white,
                   ),
                 ),
               ),
-              SizedBox(
-                height: height,
-              ),
-              FlatButton(
-                minWidth: displayWidth(context) * 0.3,
-                height: displayHeight(context) * 0.1,
-                color: Color(0xff1a8fd4),
-                onPressed: () {},
-                child: Center(
-                  child: Text(
-                    'Edit Department',
-                    style: TextStyle(
-                      color: white,
-                    ),
+            ),
+            SizedBox(
+              height: height,
+            ),
+            FlatButton(
+              minWidth: displayWidth(context) * 0.3,
+              height: displayHeight(context) * 0.1,
+              color: Color(0xff1a8fd4),
+              onPressed: () {},
+              child: Center(
+                child: Text(
+                  'Edit Department',
+                  style: TextStyle(
+                    color: white,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
