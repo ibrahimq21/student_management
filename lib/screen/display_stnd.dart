@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:student_management/database/app_database.dart';
+import 'package:student_management/database_helper.dart';
+import 'package:student_management/model/student/students.dart';
+import 'package:student_management/service/service.dart';
 
 class DisplayStndScreen extends StatefulWidget {
   const DisplayStndScreen({Key? key}) : super(key: key);
@@ -8,98 +12,68 @@ class DisplayStndScreen extends StatefulWidget {
 }
 
 class _DisplayStndScreenState extends State<DisplayStndScreen> {
+  late AppDatabase database;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getDatabase().then((value) async {
+      this.database = value;
+    });
+    super.initState();
+  }
+
+  Future<List<Student?>> fetchAllStudent() async {
+    final database = await getDatabase();
+    final studentDao = database.stndDao;
+    final result = await studentDao.fetchAllStnd();
+    return result;
+  }
+
   Widget displayTable() {
-    return DataTable(
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Text(
-            'Name',
-          ),
-        ),
-        DataColumn(
-          label: Text(
-            'Age',
-          ),
-        ),
-      ],
-      rows: const <DataRow>[
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('Mohit')),
-            DataCell(Text('23')),
-            DataCell(Text('Professional')),
-          ],
-        ),
-        DataRow(
-          cells: <DataCell>[
-            DataCell(Text('Aditya')),
-            DataCell(Text('24')),
-            DataCell(Text('Associate Professor')),
-          ],
-        ),
-      ],
+    return FutureBuilder<List<Student?>>(
+      future: fetchAllStudent(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return CircularProgressIndicator();
+        }
+        return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              return DataTable(
+                columns: const <DataColumn>[
+                  DataColumn(
+                    label: Text(
+                      'Name',
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'Email',
+                    ),
+                  ),
+                ],
+                rows: <DataRow>[
+                  DataRow(
+                    cells: <DataCell>[
+                      DataCell(Text('${snapshot.data![index]!.name}')),
+                      DataCell(Text('${snapshot.data![index]!.email}')),
+                    ],
+                  ),
+                ],
+              );
+            });
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Display Student'),
-        ),
-        body: DataTable(
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Text(
-                'Name',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Age',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Class',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'Department',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
-            ),
-          ],
-          rows: const <DataRow>[
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text('Mohit')),
-                DataCell(Text('23')),
-                DataCell(Text('6')),
-                DataCell(Text('Computer Science')),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text('Akshay')),
-                DataCell(Text('25')),
-                DataCell(Text('7')),
-                DataCell(Text('Computer Science')),
-              ],
-            ),
-            DataRow(
-              cells: <DataCell>[
-                DataCell(Text('Deepak')),
-                DataCell(Text('29')),
-                DataCell(Text('8 ')),
-                DataCell(Text('Computer Science')),
-              ],
-            ),
-          ],
-        ));
+      appBar: AppBar(
+        title: Text('Display Student'),
+      ),
+      body: displayTable(),
+    );
   }
 }

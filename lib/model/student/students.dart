@@ -3,7 +3,7 @@ import 'package:floor/floor.dart';
 @entity
 class Student {
   @PrimaryKey(autoGenerate: true)
-  int? iD;
+  int? id;
   String? name;
   String? email;
   String? password;
@@ -12,7 +12,7 @@ class Student {
   int? seat;
 
   Student({
-    this.iD,
+    this.id,
     this.name,
     this.email,
     this.password,
@@ -21,15 +21,8 @@ class Student {
     this.seat,
   });
 
-  Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ID'] = this.iD;
-    data['Name'] = this.name;
-    data['Email'] = this.email;
-    data['Password'] = this.password;
-    data['Gender'] = this.gender;
-    data['stnd_class'] = this.stndClass;
-    data['Seat'] = this.seat;
-    return data;
+  @override
+  String toString() {
+    return 'Student{id: $id, name: $name, email: $email, password: $password, gender: $gender, stndClass: $stndClass, seat: $seat}';
   }
 }

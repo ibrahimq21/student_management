@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:student_management/database/app_database.dart';
+import 'package:student_management/database_helper.dart';
 import 'package:student_management/size_helper.dart';
 
 class EditScreen extends StatefulWidget {
@@ -17,6 +19,16 @@ class _EditScreenState extends State<EditScreen> {
   final _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  late AppDatabase database;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDatabase().then((value) async {
+      this.database = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -170,9 +182,18 @@ class _EditScreenState extends State<EditScreen> {
                     minWidth: displayWidth(context) * 0.5,
                     height: displayHeight(context) * 0.08,
                     color: const Color(0xff2d336d),
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(
-                          context, '/StndDashboardScreen');
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        /*await database.stndDao.updateStudent(
+                            name: _nameController.value.text,
+                            email: _emailController.value.text,
+                            password: _passwordController.value.text,
+                            gender: _genderController.value.text,);*/
+                        final result = await database.stndDao.fetchAllStnd();
+                        print(result.toString());
+                        Navigator.pushReplacementNamed(
+                            context, '/StndDashboardScreen');
+                      }
                     },
                     child: Text(
                       'Edit Profile',

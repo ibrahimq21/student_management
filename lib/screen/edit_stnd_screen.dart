@@ -1,29 +1,26 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:student_management/database/app_database.dart';
 import 'package:student_management/database_helper.dart';
-import 'package:student_management/model/student/students.dart';
 import 'package:student_management/size_helper.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+class EditStudentScreen extends StatefulWidget {
+  const EditStudentScreen({Key? key}) : super(key: key);
 
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  _EditStudentScreenState createState() => _EditStudentScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _EditStudentScreenState extends State<EditStudentScreen> {
   final _nameController = TextEditingController();
   final _genderController = TextEditingController();
   final _stndClass = TextEditingController();
-  final _seatController = TextEditingController();
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-
   late AppDatabase database;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -179,27 +176,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         labelText: 'Enter Your Class'),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 18.0, top: 18.0),
-                  child: TextFormField(
-                    controller: _seatController,
-                    keyboardType: TextInputType.name,
-                    onEditingComplete: () => node.nextFocus(),
-                    validator: (value) => value!.isEmpty ? '*Required' : null,
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.zero,
-                      ),
-                      fillColor: Colors.white,
-                      filled: true,
-                      labelStyle: TextStyle(color: Colors.black),
-                      labelText: 'Enter your seat',
-                    ),
-                  ),
-                ),
                 Container(
                   padding: const EdgeInsets.only(top: 30.0),
                   child: FlatButton(
@@ -208,27 +184,19 @@ class _SignupScreenState extends State<SignupScreen> {
                     color: const Color(0xff2d336d),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        final student = Student(
-                            email: _emailController.value.text,
-                            gender: _genderController.value.text,
+                        /*await database.stndDao.updateStudent(
                             name: _nameController.value.text,
+                            email: _emailController.value.text,
                             password: _passwordController.value.text,
-                            seat: int.parse(_seatController.value.text),
-                            stndClass: int.parse(_stndClass.value.text));
-
-                        await database.stndDao
-                            .insertStnd(student)
-                            .then((value) async {
-                          final result = await database.stndDao.fetchAllStnd();
-                          print("Result" + result.toString());
-                        });
-
+                            gender: _genderController.value.text,);*/
+                        final result = await database.stndDao.fetchAllStnd();
+                        print(result.toString());
                         Navigator.pushReplacementNamed(
                             context, '/StndDashboardScreen');
                       }
                     },
                     child: Text(
-                      'Register',
+                      'Edit Profile',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white,

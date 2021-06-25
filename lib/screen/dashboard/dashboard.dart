@@ -59,7 +59,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
               minWidth: displayWidth(context) * 0.3,
               height: displayHeight(context) * 0.1,
               color: Color(0xff1F8976),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed('/AddDeptScreen');
+              },
               child: Center(
                 child: Text(
                   'Add Department',
