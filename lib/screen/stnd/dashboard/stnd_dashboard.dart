@@ -19,11 +19,28 @@ class _StndDashboardScreenState extends State<StndDashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Center(
-          child: Text(
-            'Dashboard',
-            style: TextStyle(
-              color: white,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                'Dashboard',
+                style: TextStyle(
+                  color: white,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacementNamed('/LoginScreen');
+                },
+                child: Container(
+                  width: 15.0,
+                  child: Icon(
+                    Icons.power_settings_new,
+                    color: Colors.yellow,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

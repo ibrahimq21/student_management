@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:student_management/database/app_database.dart';
+import 'package:student_management/database_helper.dart';
+import 'package:student_management/model/student/students.dart';
 import 'package:student_management/size_helper.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -10,10 +13,64 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String errorMessage = '';
+
+  String pwdMessage = '';
+  final adminUser = {
+    'username': 'admin',
+    'password': 'admin',
+  };
   final _formKey = GlobalKey<FormState>();
 
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  late AppDatabase database;
+
+  // late List<Student?> stndList;
+
+  @override
+  void initState() {
+    //Todo implement here
+
+    super.initState();
+  }
+
+  Future<List<Student?>> loginDemo() async {
+    final database = await getDatabase();
+    final stndDao = database.stndDao;
+
+    print("is it working?");
+    final result = await stndDao.fetchAllStnd();
+    // print(result);
+    return result;
+  }
+
+  void checkInput({String? username, String? password}) {
+    if (adminUser['username'] == username &&
+        adminUser['password'] == password) {
+      Navigator.pushNamed(context, '/DashboardScreen');
+    } else {
+      loginDemo().then((value) {
+        for (int i = 0; i < value.length; i++) {
+          if (value.elementAt(i)!.email == username) {
+            if (value.elementAt(i)!.password == password) {
+              Navigator.pushNamed(context, '/StndDashboardScreen');
+            } else {
+              setState(() {
+                errorMessage = 'Password is Wrong!';
+              });
+            }
+          } else {
+            setState(() {
+              errorMessage = 'Student Not found!';
+            });
+          }
+        }
+      });
+    }
+  }
+
   bool _visible = false;
   @override
   Widget build(BuildContext context) {
@@ -29,14 +86,13 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.deepOrangeAccent,
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(top: 140.0),
-                    width: displayWidth(context) * 0.4,
-                    height: displayHeight(context) * 0.1,
-                    padding: const EdgeInsets.only(top: 10.0),
+                    width: displayWidth(context) * 0.3,
+                    height: displayHeight(context) * 0.3,
+                    padding: const EdgeInsets.only(top: 1.0),
                     child: Image(
                       image: AssetImage('assets/image/logo.png'),
                     ),
@@ -44,13 +100,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     margin: const EdgeInsets.only(top: 40.0),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Username',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18.0),
+                          child: Text(
+                            'Username',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         TextFormField(
@@ -72,13 +132,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        Text(
-                          'Password',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
+                        SizedBox(
+                          height: 18.0,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 18.0),
+                          child: Text(
+                            'Password',
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         TextFormField(
@@ -123,14 +189,30 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: 18.0,
                         ),
+                        Text('$errorMessage',
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        SizedBox(
+                          height: 18.0,
+                        ),
                         Container(
+                          padding: const EdgeInsets.only(left: 60.0),
                           child: FlatButton(
                             minWidth: displayWidth(context) * 0.5,
                             height: displayHeight(context) * 0.08,
                             color: const Color(0xff2d336d),
                             onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, '/DashboardScreen');
+                              if (_formKey.currentState!.validate()) {
+                                checkInput(
+                                    username: _usernameController.value.text,
+                                    password: _passwordController.value.text);
+                              }
+
+                              // Navigator.pushReplacementNamed(
+                              //     context, '/DashboardScreen');
                             },
                             child: Text(
                               'Login',
@@ -149,10 +231,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 .pushReplacementNamed('/SignupScreen');
                           },
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 28.0),
+                            padding:
+                                const EdgeInsets.only(left: 60.0, top: 30.0),
                             child: Text(
                               'Are u a student. Sign Up here then!',
-                              textAlign: TextAlign.start,
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15.0,

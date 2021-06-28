@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_management/database/app_database.dart';
 import 'package:student_management/database_helper.dart';
 import 'package:student_management/model/student/students.dart';
-import 'package:student_management/service/service.dart';
+import 'package:student_management/screen/detail_students.dart';
 
 class DisplayStndScreen extends StatefulWidget {
   const DisplayStndScreen({Key? key}) : super(key: key);
@@ -27,42 +27,59 @@ class _DisplayStndScreenState extends State<DisplayStndScreen> {
     final database = await getDatabase();
     final studentDao = database.stndDao;
     final result = await studentDao.fetchAllStnd();
+    print(result);
     return result;
   }
 
-  Widget displayTable() {
+  Widget listTileDemo() {
     return FutureBuilder<List<Student?>>(
       future: fetchAllStudent(),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return CircularProgressIndicator();
+        if (snapshot.hasError || snapshot.data == null) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
         return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              return DataTable(
-                columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      'Name',
+          itemCount: snapshot.data!.length,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailStudentScreen(
+                          student: snapshot.data![index],
+                        ),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ListTile(
+                      title: Text(
+                        'Name: ${snapshot.data![index]!.name}',
+                        style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'Email: ${snapshot.data![index]!.email}',
+                        style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
-                  DataColumn(
-                    label: Text(
-                      'Email',
-                    ),
-                  ),
-                ],
-                rows: <DataRow>[
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(Text('${snapshot.data![index]!.name}')),
-                      DataCell(Text('${snapshot.data![index]!.email}')),
-                    ],
-                  ),
-                ],
-              );
-            });
+                ),
+              ],
+            );
+          },
+        );
       },
     );
   }
@@ -73,7 +90,7 @@ class _DisplayStndScreenState extends State<DisplayStndScreen> {
       appBar: AppBar(
         title: Text('Display Student'),
       ),
-      body: displayTable(),
+      body: listTileDemo(),
     );
   }
 }
