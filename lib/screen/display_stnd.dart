@@ -88,6 +88,11 @@ class _DisplayStndScreenState extends State<DisplayStndScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/DashboardScreen');
+            },
+            child: Icon(Icons.arrow_back)),
         title: Text('Display Student'),
       ),
       body: listTileDemo(),

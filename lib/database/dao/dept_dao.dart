@@ -9,8 +9,11 @@ abstract class DeptDao {
   @Query('SELECT * FROM Department WHERE id = :id')
   Future<Department?> findDeptById(int id);
 
-  @Query('DELETE FROM Department Where id = :id')
-  Future<Department?> deleteDepartment(int id);
+  @delete
+  Future<void> deleteDepartment(Department dept);
+
+  @update
+  Future<void> updateDepartment(Department dept);
 
   @insert
   Future<void> insertDept(Department dept);

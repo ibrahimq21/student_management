@@ -9,14 +9,12 @@ abstract class StndDao {
   @Query('SELECT * FROM Student WHERE id = :id')
   Future<Student?> findStndById(int id);
 
-  @Query(
-      'Update Student SET name =:name, email =:email, password =:password, gender =:gender1 where iD = :iD')
-  Future<void> updateStudent(
-      String name, String email, String password, String gender1, int iD);
+  @update
+  Future<void> updateStnd(Student? student);
 
-  @Query('DELETE FROM Student Where id = :id')
-  Future<Student?> deleteStudent(int id);
+  @delete
+  Future<void> deleteStnd(Student? student);
 
   @insert
-  Future<void> insertStnd(Student stnd);
+  Future<void> insertStnd(Student? stnd);
 }

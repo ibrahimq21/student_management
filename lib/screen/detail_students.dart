@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:student_management/database_helper.dart';
 import 'package:student_management/model/student/students.dart';
+import 'package:student_management/screen/edit_stnd_screen.dart';
 
 class DetailStudentScreen extends StatefulWidget {
   final Student? student;
@@ -13,10 +15,23 @@ class DetailStudentScreen extends StatefulWidget {
 }
 
 class _DetailStudentScreenState extends State<DetailStudentScreen> {
+  Future<void> deleteStudent({Student? student}) async {
+    final database = await getDatabase();
+    final stndDao = database.stndDao;
+    await stndDao.deleteStnd(student);
+    final result = await stndDao.fetchAllStnd();
+    print(result);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/DashboardScreen');
+            },
+            child: Icon(Icons.arrow_back)),
         title: Center(child: Text('Student Details')),
       ),
       body: Container(
@@ -44,6 +59,36 @@ class _DetailStudentScreenState extends State<DetailStudentScreen> {
               Text('Seat No: ${widget.student!.seat}',
                   style:
                       TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditStudentScreen(
+                              student: widget.student,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text('Update')),
+                  ElevatedButton(
+                      onPressed: () {}, child: Text('Add Department')),
+                  ElevatedButton(
+                    onPressed: () {
+                      deleteStudent(student: widget.student);
+                      Navigator.pop(context);
+                    },
+                    child: Text('Delete'),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color?>(Colors.red),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

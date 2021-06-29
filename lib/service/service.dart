@@ -18,6 +18,5 @@ class ServiceAPI {
   Future<void> deleteStudentById({required int id}) async {
     final database = await getDatabase();
     final studentDao = database.stndDao;
-    await studentDao.deleteStudent(id);
   }
 }

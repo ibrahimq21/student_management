@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_management/screen/add_dept.dart';
 import 'package:student_management/screen/dashboard/dashboard.dart';
-import 'package:student_management/screen/detail_students.dart';
 import 'package:student_management/screen/display_stnd.dart';
 import 'package:student_management/screen/login/login_screen.dart';
 import 'package:student_management/screen/splashscreen.dart';
