@@ -1,6 +1,10 @@
 import 'package:floor/floor.dart';
+import 'package:student_management/model/department/department.dart';
 
-@Entity(primaryKeys: ['name', 'seat'])
+@Entity(foreignKeys: [
+  ForeignKey(
+      childColumns: ['dept_id'], parentColumns: ['id'], entity: Department)
+])
 class Student {
   @PrimaryKey(autoGenerate: true)
   int? id;
@@ -10,6 +14,8 @@ class Student {
   String? gender;
   int? stndClass;
   int? seat;
+  @ColumnInfo(name: 'dept_id')
+  int? deptId;
 
   Student({
     this.id,
@@ -19,10 +25,11 @@ class Student {
     this.gender,
     this.stndClass,
     this.seat,
+    this.deptId,
   });
 
   @override
   String toString() {
-    return 'Student{id: $id, name: $name, email: $email, password: $password, gender: $gender, stndClass: $stndClass, seat: $seat}';
+    return 'Student{id: $id, name: $name, email: $email, password: $password, gender: $gender, stndClass: $stndClass, seat: $seat, deptID: $deptId';
   }
 }

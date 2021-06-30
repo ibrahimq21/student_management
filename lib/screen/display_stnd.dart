@@ -26,6 +26,7 @@ class _DisplayStndScreenState extends State<DisplayStndScreen> {
   Future<List<Student?>> fetchAllStudent() async {
     final database = await getDatabase();
     final studentDao = database.stndDao;
+
     final result = await studentDao.fetchAllStnd();
     print(result);
     return result;

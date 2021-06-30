@@ -1,3 +1,4 @@
+
 import 'package:student_management/model/student/students.dart';
 import 'package:floor/floor.dart';
 
@@ -10,7 +11,7 @@ abstract class StndDao {
   Future<Student?> findStndById(int id);
 
   @update
-  Future<void> updateStnd(Student? student);
+  Future<int> updateStnd(Student? student);
 
   @delete
   Future<void> deleteStnd(Student? student);

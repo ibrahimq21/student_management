@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:student_management/database_helper.dart';
+import 'package:student_management/model/department/department.dart';
 import 'package:student_management/model/student/students.dart';
+import 'package:student_management/screen/display_add_dept.dart';
 import 'package:student_management/screen/edit_stnd_screen.dart';
 
 class DetailStudentScreen extends StatefulWidget {
@@ -21,6 +23,13 @@ class _DetailStudentScreenState extends State<DetailStudentScreen> {
     await stndDao.deleteStnd(student);
     final result = await stndDao.fetchAllStnd();
     print(result);
+  }
+
+  Future<Department?> getDepartmentByID(int? id) async {
+    final database = await getDatabase();
+    final deptDao = database.deptDao;
+    final result = deptDao.findDeptById(id!);
+    return result;
   }
 
   @override
@@ -59,6 +68,14 @@ class _DetailStudentScreenState extends State<DetailStudentScreen> {
               Text('Seat No: ${widget.student!.seat}',
                   style:
                       TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+              FutureBuilder<Department?>(
+                future: getDepartmentByID(widget.student!.deptId),
+                builder: (context, snapshot) {
+                  return Text('${snapshot.data!.department}',
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold));
+                },
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -75,7 +92,15 @@ class _DetailStudentScreenState extends State<DetailStudentScreen> {
                       },
                       child: Text('Update')),
                   ElevatedButton(
-                      onPressed: () {}, child: Text('Add Department')),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DisplayAddDept(
+                                      student: widget.student,
+                                    )));
+                      },
+                      child: Text('Add Department')),
                   ElevatedButton(
                     onPressed: () {
                       deleteStudent(student: widget.student);

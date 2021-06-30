@@ -1,6 +1,6 @@
 import 'package:floor/floor.dart';
 
-@Entity(primaryKeys: ['department'])
+@entity
 class Department {
   @PrimaryKey(autoGenerate: true)
   int? id;
